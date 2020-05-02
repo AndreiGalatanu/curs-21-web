@@ -45,7 +45,7 @@ public class CountryController {
 
     //- get countries in continent : /continents/<continentName>/countries -> returns list of Country objects
     @GetMapping("/countries/continent/countries")
-    List<Country> countiesOfContinent(@PathVariable String continent) {
+    List<Country> countiesOfContinent(@RequestParam(required = false) String continent) {
 
         return service.showCountriesFrom(continent);
 
@@ -58,15 +58,15 @@ public class CountryController {
     }
 
     //- get countries in <continent> with population larger than <population> : /continents/<continentName>/countries?minPopulation=<minimum population> -> returns list of Country objects
-    @GetMapping("/continents/<continentName>/countries?minPopulation=<minimum population>")
-    List<Country> getCountries(@PathVariable String name, long pop) {
+    @GetMapping("/continents/population")
+    List<Country> getCountries(@RequestParam(required = false) String name,@RequestParam(required = false) long pop) {
         return service.getCountriesOnContinentLargerThenNumber(name, pop);
     }
 
     //- get countries that neighbor X but not neighbor Y : /countries?includeNeighbour=<includedNeighbourCode>&excludeNeighbour=<excludedNeighbourCode> -> returns list of Country objects
-    @GetMapping("/countries?includeNeighbour=<includedNeighbourCode>&excludeNeighbour=<excludedNeighbourCode>")
-    List<Country> countriesWithNei(@PathVariable String neigh, String noNei) {
-        return service.gotNeighbourXandNotY(neigh, noNei);
+    @GetMapping("/countries/neighboursX")
+    List<Country> countriesWithNei(@RequestParam(required = false) String neighbour, @RequestParam String excludedNeighbour) {
+        return service.gotNeighbourXandNotY(neighbour, excludedNeighbour);
     }
 
     //- get map from country to population : /countries/population -> returns map from String to Long
